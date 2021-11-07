@@ -29,6 +29,7 @@
 #include <stddef.h>
 
 #include "mbedtls/build_info.h"
+#include "mbedtls/platform_util.h"
 
 /** The selected feature is not available. */
 #define MBEDTLS_ERR_MD_FEATURE_UNAVAILABLE                -0x5080
@@ -135,6 +136,23 @@ const mbedtls_md_info_t *mbedtls_md_info_from_string( const char *md_name );
  * \return          NULL if the associated message-digest information is not found.
  */
 const mbedtls_md_info_t *mbedtls_md_info_from_type( mbedtls_md_type_t md_type );
+
+/**
+ * \brief           This function returns the message-digest information
+ *                  associated with the given context.
+ *
+ * \param ctx       The context to extract the message-digest information from.
+ *                  This must be initialized.
+ *
+ * \return          The message-digest information associated with \p ctx.
+ * \return          NULL if the associated message-digest information is not found.
+ */
+const mbedtls_md_info_t *mbedtls_md_info_from_ctx(
+    const mbedtls_md_context_t *ctx )
+{
+    MBEDTLS_INTERNAL_VALIDATE_RET( ctx != NULL, NULL );
+    return( ctx->MBEDTLS_PRIVATE(md_info) );
+}
 
 /**
  * \brief           This function initializes a message-digest context without
