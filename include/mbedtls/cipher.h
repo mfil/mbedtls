@@ -264,7 +264,8 @@ typedef struct mbedtls_cmac_context_t mbedtls_cmac_context_t;
  *              mbedtls_cipher_info_from_string(),
  *              mbedtls_cipher_info_from_type(),
  *              mbedtls_cipher_info_from_values(),
- *              mbedtls_cipher_info_from_psa().
+ *              mbedtls_cipher_info_from_psa(),
+ *              mbedtls_cipher_info_from_ctx().
  */
 typedef struct mbedtls_cipher_info_t
 {
@@ -420,6 +421,22 @@ const mbedtls_cipher_info_t *mbedtls_cipher_info_from_type( const mbedtls_cipher
 const mbedtls_cipher_info_t *mbedtls_cipher_info_from_values( const mbedtls_cipher_id_t cipher_id,
                                               int key_bitlen,
                                               const mbedtls_cipher_mode_t mode );
+
+/**
+ * \brief               This function returns the cipher info structure
+ *                      associated with the given context.
+ *
+ * \param ctx           The context to extract the cipher info structure from.
+ *                      This must be initialized.
+ *
+ * \return              The cipher info structure.
+ */
+static inline const mbedtls_cipher_info_t *mbedtls_cipher_info_from_ctx(
+    const mbedtls_cipher_context_t *ctx )
+{
+    MBEDTLS_INTERNAL_VALIDATE_RET( ctx != NULL, NULL );
+    return( ctx->MBEDTLS_PRIVATE(cipher_info) );
+}
 
 /**
  * \brief               Retrieve the identifier for a cipher info structure.
