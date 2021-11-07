@@ -104,6 +104,26 @@ int mbedtls_pem_read_buffer( mbedtls_pem_context *ctx, const char *header, const
                      size_t pwdlen, size_t *use_len );
 
 /**
+ * \brief       Get the decoded data from a PEM context.
+ *
+ * \param ctx       Context to get data from.
+ *
+ * \return          0 on success, 1 on error.
+ */
+static inline int mbedtls_pem_get_der_data( mbedtls_pem_context *ctx,
+                     const unsigned char **der_data, size_t *size )
+{
+    if( ctx->MBEDTLS_PRIVATE(buf) == NULL )
+    {
+        *der_data = NULL;
+        return( 1 );
+    }
+    *der_data = ctx->MBEDTLS_PRIVATE(buf);
+    *size = ctx->MBEDTLS_PRIVATE(buflen);
+    return( 0 );
+}
+
+/**
  * \brief       PEM context memory freeing
  *
  * \param ctx   context to be freed
